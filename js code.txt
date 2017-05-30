@@ -1,0 +1,395 @@
+Элемент + this обозначается так:
+
+ $(document).on("click","table td", function() {
+ 	("> img",this).hide;
+ });
+
+
+ ------------------------------
+
+JS ссылка в новом окне
+onclick="window.open('http://ok.ru/profile/241960160002');" 
+
+В текущем окне
+onclick="javascript:document.location.href='http://fast-logistics.ru/';"
+
+еще
+
+onclick="window.location.href='http://shop-vshalashe.ru/cart/';"
+
+
+ ------------------------------
+
+ Пример цикла с функцией:
+
+ jQuery(document).ready(function($) {
+   $('table td img').each(function() {
+    $(this).wrap("<a rel='glr' class='fancybox' href='"+$(this).attr('src')+"'></a>");
+   });
+});
+
+--------------------------------
+Toggle для html текста
+$('#showMore').toggle(function() {
+    $(this).text('Before');
+}, function() {
+    $(this).text('After');
+});
+
+
+---------------------------------
+Применить функцию к нескольким селекторам
+$('.phone_box' +  ',.order_overlay').toggleClass('showIt');
+
+
+---------------------------------
+Некоторый пример с Toggle на разные функции
+
+$(".news_item").toggle(
+    function() {
+        $(".news_item").hide("slide", {
+            direction: "down"
+        }, 1000);
+    },
+    function() {
+        $(".news_item").show("slide", {
+            direction: "up"
+        }, 500);
+    }
+);
+
+---------------------------------
+
+Проверка "Если input не в фокусе"
+
+if (!$("#search_inp:focus").length){
+    alert ("input не в фокусе");
+}
+
+
+
+---------------------------------
+
+Пример работы с вложенностями( сначала на уровень вверх,затем следующий после выбранного, потом среди внутренних найти класс)
+
+$(".fileview").click(function(){
+    $(this).parents(".col-xs-4").next().find('.fileview').addClass("showIt");
+});
+
+
+---------------------------------
+такая конструкция.можно найти применение
+$(document).on('click','.text-open',function(){
+
+});
+
+
+---------------------------------
+
+Поиск по ссылке с заменой ссылки
+
+$("a[href^='/raspil_i_obrabotka/raspil-dsp-ldsp']").attr("href", "http://www.nmk-mebel.ru/raspil-dsp-ldsp");
+
+---------------------------------
+
+.eq(1) - это функиця отсчета элементов. // $('.big').eq(3).addClass('small');
+
+=================================
+Предотвратить переход по ссылке
+$("a").click(function(){
+        event.preventDefault();  
+});
+
+
+Пример передачи ссылки и изображения дял галерееи с превью
+gallery_item = превью вариант
+big_photo = главное изображение
+
+
+$(document).ready(function() {
+    $(".gallery_item").click(function(){
+        event.preventDefault();
+        var new_a_link = $(this).attr("href");
+        $(".big_photo").fadeOut("fast").attr("src", new_a_link).fadeIn("fast");
+        $(".big_photo").parent("a").attr("href",new_a_link).easyZoom();
+    });
+});
+
+
+
+Условие по УРЛ текущей страницы
+
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var Pagelink = (document.location.href);    - добавляем текущий урл в переменную
+        var $cond = (/\/katalog\//.test(Pagelink)); -  функцией test проверяем есть ли в урл слово katalog
+        if ($cond == true ){                        -   само условие
+            $(".sale_form").show();
+        }
+    });
+</script>
+
+===============================================================================================
+
+Перехватить ajax событие во время его выполнения на странице можно так:
+
+/cart/add/ - это имя ajax события. узнать его можно в отладчике на вкладке Network
+
+$( document ).ajaxSuccess(function( event, xhr, settings ) {
+  if ( settings.url == "/cart/add/" ) {    
+      
+
+  }
+});
+
+
+===============================================================================================
+
+
+Функция условия по ширине страницы:
+
+$(document).ready(function () {
+    var w = $(window).width();
+    if (w <= 600) { 
+        $('.wordChange').html('Пункты быстрого реагирования');
+    }
+});
+
+
+
+===============================================================================================
+
+Функция запуска таймера по сабытию и события по истечению таймера
+
+
+    $("#FeebBackForm input").focus(function(){
+        var submitReady = 1;
+        var clock = setInterval(function() {
+            submitReady++;
+            console.log(submitReady);
+        }, 1000);
+
+        setTimeout(function() {
+          clearInterval(clock);
+          
+        }, 5000);
+    });
+
+=============================================================
+
+Переключалка классов по клику при условии что на выбранном нет класса:
+
+ $('.season_choose ul li').click(function(){
+        if($(this).hasClass('active')){
+          return false;
+        }
+        else{
+          $('.season_choose ul li').removeClass('active');
+          $(this).addClass('active');
+        }  
+    });
+
+=======================================================
+
+Условие от ширины экрана
+
+<script>
+    If (document.body.clientWidth>768){
+      document.write('<script src=...>')
+    }
+</script>
+
+
+=======================================================
+
+Если обрамить функцию в try catch то при условии вызова этой функции как несуществующей(потерялось подключение самого скрипта) не будет остановлена компиляция всего оставшегося JS
+
+try {
+
+} catch(e) { console.log(e) }
+
+
+=======================================================
+
+Скрипт подмены номера при перехода с директа
+
+$(document).ready(function() {
+    // Проверка наличия гет параметра в урл
+    function $_GET(key) {
+        var s = window.location.search;
+        s = s.match(new RegExp(key + '=([^&=]+)'));
+        return s ? s[1] : false;
+    }
+    // Функция на запись куки
+    function setcookie(a, b, c) {
+        if (c) {
+            var d = new Date();
+            d.setDate(d.getDate() + c);
+        }
+        if (a && b) document.cookie = a + '=' + b + (c ? '; expires=' + d.toUTCString() : '');
+        else return false;
+    }
+    // Функция на чтение куки
+    function getcookie(a) {
+        var b = new RegExp(a + '=([^;]){1,}');
+        var c = b.exec(document.cookie);
+        if (c) c = c[0].split('=');
+        else return false;
+        return c[1] ? c[1] : false;
+    }
+    // Если в нужном нам гет параметре есть запись
+    if ($_GET('yclid') != 0) {
+
+        // То пишем об этом в куки
+        setcookie("PhoneReplasement", "true", 30);
+    }
+    // Заменяем номер если была найдена кука
+    var PhoneReplasement = getcookie("PhoneReplasement");
+
+    if (PhoneReplasement == "true") {
+        console.log('есть кука')
+        $('.phone_replacement').html('+7 (812) 603-49-18');
+    }
+});
+
+
+
+Функция с принятием аргумента для фиксирования блока когда до него доходит прокрутка.
+
+function fix_it_block(client){
+        
+    var V_position = $(client).offset().top;
+    var FixedWidth = $(client).outerWidth();
+    var H_position = $(client).offset().left;
+
+    var cssValues ={
+        "left":H_position,
+        "width":FixedWidth
+    }
+    
+    console.log(FixedWidth);
+    
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > V_position + -50) {
+            $(client).addClass('fixed_block');
+            $(client).css(cssValues);
+        }
+        else{
+            $(client).removeClass('fixed_block');
+        }
+
+    });
+}
+    
+fix_it_block('.customer_box');
+
+
+
+=====================================================================================
+
+Мои табы с памятью в куки
+
+*JQuery
+
+// Табы  на странице 
+$('.content_tabs ul li').click(function(){
+    var tabData = $('span', this).attr('data-tab');
+
+    // Запоминаем выбранную вкладку в куки
+    document.cookie ='tabReminder = '+tabData;
+
+    $('.content_tabs ul li').removeClass('active');
+    $(this).addClass('active');
+
+    $('.tab_container>div').each(function(){
+
+        var tabId = $(this).attr('id');
+
+        $(this).removeClass('active');
+
+        if(tabId = tabData){
+            $('div#'+tabId).addClass('active');
+        }
+    });
+
+    console.log(tabData);
+});
+
+// Функция чтения куков
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+// Если была запомнена вкладка то при загрузке страницы ее и открываем
+var tabData = getCookie('tabReminder');
+
+if(tabData != undefined){
+    $('.content_tabs ul li span[data-tab="'+tabData+'"]').parent().addClass('active');
+    $('.tab_container>div[id="'+tabData+'"]').addClass('active');
+}
+else{
+    $('.content_tabs ul li:eq(0), .tab_container>div:eq(0)').addClass('active');
+
+}
+
+*HTML
+
+<div class="content_tabs">
+    <ul>
+        <li>
+            <span data-tab="tab1">Таб1</span>
+        </li>
+        <li>
+            <span data-tab="tab2">Таб2</span>
+        </li>
+        <li>
+            <span data-tab="tab3">Таб3</span>
+        </li>
+    </ul>
+    <div class="tab_container">
+        <div id="tab1">
+            1
+        </div>
+        <div id="tab2">
+            2
+        </div>
+        <div id="tab3">
+            3
+        </div>
+    </div>
+</div> 
+
+*CSS
+.content_tabs{width:100%}.content_tabs ul{display:table;list-style:none;width:100%;padding-left:0!important}.content_tabs ul li{display:inline-block;width:33%;list-style:none;margin-right:2px;box-sizing:border-box;padding:8px;border-top:1px solid #444;background:#b2ecf8;border-left:1px solid #444;border-right:1px solid #444}.content_tabs ul li.active{background:0 0}.content_tabs ul li span{display:block;color:#444!important;font-size:14px;text-decoration:none;cursor:pointer}.content_tabs .tab_container>div,.content_tabs ul li:before{display:none}.content_tabs .tab_container>div.active{display:block}
+
+
+
+================================================================================================
+
+Горизонтальный аккардион
+
+JQ
+
+$('.tabs_buttons div:last()').addClass('active');
+    $('.relinks_block .tabs_buttons div').click(function(){
+        var current_tab = $(this).attr('data-id');
+        $('.relinks_block .tabs_buttons div').removeClass('active');
+        $(this).addClass('active');
+        console.log(current_tab);
+        
+        $('.tab_item').each(function(){
+            if( $(this).attr('data-id') == current_tab){
+                $('.tab_item').hide();
+                $(this).fadeIn('fast');
+            }
+        })
+})
+
+HTML
+
+<div class="relinks_block"><div class="row"><div class="col-xs-6"><div class="tab_content"><div class="tab_item" data-id="Расчет"><div class="row"><div class="col-xs-6"><img src="/assets/components/phpthumbof/cache/333.608bf058317e03b751ea09bc97d296ad46.jpg" alt="Расчет"></div><div class="col-xs-6"><p class="block_header">Расчет</p><p class="text"><a href="http://mastervent-spb.ru/ventilyacziya/proektirovanie.html">Расчет и подбор вентиляционных систем</a></p></div></div></div><div class="tab_item" data-id="Установка"><div class="row"><div class="col-xs-6"><img src="/assets/components/phpthumbof/cache/555.608bf058317e03b751ea09bc97d296ad46.jpg" alt="Установка"></div><div class="col-xs-6"><p class="block_header">Установка</p><p class="text"><a href="http://mastervent-spb.ru/ventilyacziya/montazh.html">Установка вентиляции на производстве</a></p></div></div></div></div></div><div class="col-xs-6"><div class="tabs_buttons"><div data-id="Расчет" class="tab_button"><p class="block_header">Расчет</p></div><div data-id="Установка" class="tab_button"><p class="block_header">Установка</p></div></div></div></div></div>
